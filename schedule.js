@@ -1,0 +1,22 @@
+module.exports = [
+{ title: "CBS News Roundup", start: "03:10", end: "04:30" },
+{ title: "CBS News Mornings", start: "04:30", end: "05:00" },
+{ title: "News 6 Mornings", start: "05:00", end: "06:00" },
+{ title: "News 6 Mornings", start: "06:00", end: "07:00" },
+{ title: "CBS Mornings", start: "07:00", end: "09:00" },
+{ title: "Entertainment Tonight", start: "09:00", end: "09:30" },
+{ title: "Inside Edition", start: "09:30", end: "10:00" },
+{ title: "Let's Make a Deal", start: "10:00", end: "11:00" },
+{ title: "The Price Is Right", start: "11:00", end: "12:00" },
+{ title: "News 6 at Noon", start: "12:00", end: "12:30" },
+{ title: "The Young and the Restless", start: "12:30", end: "13:30" },
+{ title: "The Bold and the Beautiful", start: "13:30", end: "14:00" },
+{ title: "Beyond the Gates", start: "14:00", end: "15:00" },
+{ title: "The Drew Barrymore Show", start: "15:00", end: "16:00" },
+{ title: "News 6 at 4pm", start: "16:00", end: "17:00" },
+{ title: "News 6 at 5pm", start: "17:00", end: "18:00" },
+{ title: "News 6 at 6pm", start: "18:00", end: "18:30" },
+{ title: "CBS Evening News", start: "18:30", end: "19:00" },
+{ title: "Entertainment Tonight", start: "19:00", end: "19:30" },
+{ title: "Inside Edition", start: "19:30", end: "20:00" }
+];

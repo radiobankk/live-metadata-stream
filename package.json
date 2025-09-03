@@ -1,0 +1,20 @@
+{
+  "name": "live-metadata-stream",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "update-metadata": "node autoUpdateMetadata.js",
+    "dev": "nodemon server.js",
+    "test": "echo \"No tests yet, but the stream is alive.\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "fluent-ffmpeg": "^2.1.3"
+  }
+}
