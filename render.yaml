@@ -1,0 +1,5 @@
+services:
+- type: web
+name: wkmg-stream-relay
+env: docker
+plan: free

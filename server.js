@@ -1,8 +1,12 @@
 const express = require("express");
 const { PassThrough } = require("stream");
-const { spawn } = require("child_process");
 const crypto = require("crypto");
 const cors = require("cors");
+const ffmpeg = require("fluent-ffmpeg");
+const ffmpegPath = require("ffmpeg-static"); // 🧩 Portable FFmpeg binary
+
+// 🔧 Set FFmpeg path explicitly for Render compatibility
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,32 +23,30 @@ let audioStream = new PassThrough();
 let activeClients = 0;
 
 // 🎧 FFmpeg pipeline with WKMG branding
-const ffmpegProcess = spawn("ffmpeg", [
-"-re",
-"-timeout", "5000000",
-"-rw_timeout", "15000000",
-"-loglevel", "verbose",
-"-i", streamUrl,
-"-vn",
-"-c:a", "libmp3lame",
-"-b:a", "192k",
-"-f", "mp3",
+ffmpeg(streamUrl)
+.addInputOption("-re", "-timeout", "5000000", "-rw_timeout", "15000000", "-loglevel", "verbose")
+.noVideo()
+.audioCodec("libmp3lame")
+.audioBitrate("192k")
+.format("mp3")
+.outputOptions([
 "-metadata", "title=WKMG-DT1 NEWS 6",
 "-metadata", "artist=WKMG-DT1 NEWS 6",
 "-metadata", "album=WKMG-DT1 NEWS 6",
-"-metadata", "comment=Live MP3 Relay / 192K",
-"pipe:1"
-]);
-
-ffmpegProcess.stdout.pipe(audioStream, { end: false });
-
-ffmpegProcess.stderr.on("data", data => {
-console.log(`📣 [${traceLabel}] FFmpeg stderr:`, data.toString());
-});
-
-ffmpegProcess.on("close", code => {
-console.log(`❌ [${traceLabel}] FFmpeg exited with code ${code}`);
-});
+"-metadata", "comment=Live MP3 Relay / 192K"
+])
+.output("pipe:1")
+.on("start", cmd => {
+console.log(`✅ FFmpeg started for ${traceLabel}`);
+console.log(cmd);
+})
+.on("stderr", line => {
+console.log(`📣 [${traceLabel}] FFmpeg stderr:`, line);
+})
+.on("error", err => {
+console.error(`❌ [${traceLabel}] FFmpeg error: ${err.message}`);
+})
+.pipe(audioStream, { end: false });
 
 // 🔊 WKMG stream endpoint
 app.get("/stream-wkmg.mp3", (req, res) => {
@@ -101,5 +103,5 @@ process.exit();
 });
 
 app.listen(PORT, () => {
-console.log(`🎧 WKMG-DT1 MP3 stream available at http://localhost:3000/stream-wkmg.mp3`);
+console.log(`🎧 WKMG-DT1 MP3 stream available at http://localhost:${PORT}/stream-wkmg.mp3`);
 });
